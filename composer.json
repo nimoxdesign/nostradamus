@@ -1,12 +1,10 @@
 {
     "require-dev": {
-        "kahlan/kahlan": "^1.0"
+        "kahlan/kahlan": "^5.2"
     },
     "autoload": {
         "psr-4": {
             "App\\": "src"
         }
-    },
-    "require": {
     }
 }

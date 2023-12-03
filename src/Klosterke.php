@@ -2,72 +2,26 @@
 
 namespace App;
 
+use App\Entity\Catalog\Product;
+use App\Factory\Catalog\CategoryFactory;
+
 class Klosterke
 {
-    public $naam;
+    public const TYPE_DEFAULT = 'normal';
+    public const TYPE_REDWINE = 'Rode Wijn';
+    public const TYPE_WHITEWINE = 'Witte Wijn';
+    public const TYPE_BBQ = 'BBQ';
+    public const TYPE_ABBYBEER = 'Kloosterbier';
 
-    public $kwaliteit;
+    public static function getProduct($categoryName, $productName, $quality, $daysToSell) {
+        $product = new Product;
+        $category = CategoryFactory::create($categoryName);
 
-    public $verkopenVoor;
+        $product->setCategory($category);
+        $product->setName($productName);
+        $product->setQuality($quality);
+        $product->setDaysToSell($daysToSell);
 
-    public function __construct($naam, $kwaliteit, $verkopenVoor)
-    {
-        $this->naam         = $naam;
-        $this->kwaliteit    = $kwaliteit;
-        $this->verkopenVoor = $verkopenVoor;
-    }
-
-    public static function of($naam, $kwaliteit, $verkopenVoor) {
-        return new static($naam, $kwaliteit, $verkopenVoor);
-    }
-
-    public function tick()
-    {
-        if ($this->naam !== 'Rode Wijn - Merlot' and $this->naam !== 'Witte Wijn - Chardonnay') {
-            if ($this->kwaliteit > 0) {
-                if ($this->naam !== 'BBQ - Afkoop drank') {
-                    $this->kwaliteit--;
-                }
-            }
-        } else {
-            if ($this->kwaliteit < 50) {
-                $this->kwaliteit++;
-
-                if ($this->naam === 'Witte Wijn - Chardonnay') {
-                    if ($this->verkopenVoor < 11) {
-                        if ($this->kwaliteit < 50) {
-                            $this->kwaliteit++;
-                        }
-                    }
-                    if ($this->verkopenVoor < 6) {
-                        if ($this->kwaliteit < 50) {
-                            $this->kwaliteit++;
-                        }
-                    }
-                }
-            }
-        }
-
-        if ($this->naam !== 'BBQ - Afkoop drank') {
-            $this->verkopenVoor--;
-        }
-
-        if ($this->verkopenVoor < 0) {
-            if ($this->naam !== 'Rode Wijn - Merlot') {
-                if ($this->naam !== 'Witte Wijn - Chardonnay') {
-                    if ($this->kwaliteit > 0) {
-                        if ($this->naam !== 'BBQ - Afkoop drank') {
-                            $this->kwaliteit--;
-                        }
-                    }
-                } else {
-                    $this->kwaliteit = 0;
-                }
-            } else {
-                if ($this->kwaliteit < 50) {
-                    $this->kwaliteit++;
-                }
-            }
-        }
+        return $product;
     }
 }
